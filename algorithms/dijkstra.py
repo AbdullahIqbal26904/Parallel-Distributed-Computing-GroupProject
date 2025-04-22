@@ -3,9 +3,9 @@ import time
 from visuals.draw import display_maze_with_path
 
 
-def dijkstra_search(start, goal, mazeList, path, finalPath, goal_pen):
+def dijkstra_search(start, goal, nodes, original_maze, path, finalPath, goal_pen):
     # Reset costs and parents for all nodes
-    for node in mazeList:
+    for node in nodes:
         node.g_cost = float('inf')
         node.parent = None
     start.g_cost = 0
@@ -56,7 +56,8 @@ def dijkstra_search(start, goal, mazeList, path, finalPath, goal_pen):
             finalPath.stamp()
             time.sleep(0.1)
 
-    display_maze_with_path([row[:] for row in mazeList], path_list)
+    # Use the original maze structure for display
+    display_maze_with_path(original_maze, path_list)
     goal_pen.color("red")
     goal_pen.goto(goal.x, goal.y)
     goal_pen.stamp()

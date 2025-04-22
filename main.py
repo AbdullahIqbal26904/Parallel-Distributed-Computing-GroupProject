@@ -32,6 +32,6 @@ if __name__ == '__main__':
         A_star_Search(root, goal_node, n, path, finalPath, goal_pen)
     elif user_input == 2:
         setup_maze(maze_list, Wall, Start, goal_pen)
-        dijkstra_search(root, goal_node, n, path, finalPath, goal_pen)
+        dijkstra_search(root, goal_node, n, maze_list, path, finalPath, goal_pen)  # Pass maze_
 
     wn.mainloop()
