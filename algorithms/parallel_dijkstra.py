@@ -30,42 +30,38 @@ def process_bucket_nodes(args):
     found_goal = False
 
     for node in nodes_to_process:
-        # Get current cost from shared array
         with global_costs.get_lock():
             current_cost = global_costs[node.id]
-
-        # Skip processing if a lower cost was found by another process
+        
+        # Mark node as visited
         with global_visited.get_lock():
-            if global_visited[node.id]:
-                continue
-
+            global_visited[node.id] = 1
+        
+        # Count explored node
         with global_nodes_explored.get_lock():
             global_nodes_explored.value += 1
 
         if node.id == global_goal_id:
-            return [], True
+            found_goal = True
+            continue
 
-        # Process all edges
+        # Process all neighbors
         for neighbor in node.friend:
             if neighbor.data == "X":
                 continue
-
-            weight = 20  # Fixed edge weight
+                
+            weight = 20  # Standard edge weight
             new_cost = current_cost + weight
-            neighbor_id = neighbor.id
-
-            # Update cost and parent if better path found
+            
             with global_costs.get_lock():
-                if new_cost < global_costs[neighbor_id]:
-                    global_costs[neighbor_id] = new_cost
+                if new_cost < global_costs[neighbor.id]:
+                    global_costs[neighbor.id] = new_cost
                     with global_parents.get_lock():
-                        global_parents[neighbor_id] = node.id
+                        global_parents[neighbor.id] = node.id
+                    
+                    # Add to relaxed edges for bucket processing
                     new_bucket = int(new_cost // global_delta)
                     local_relaxed_edges.append((neighbor, new_bucket))
-
-        # Mark node as visited
-        with global_visited.get_lock():
-            global_visited[node.id] = 1
 
     return local_relaxed_edges, found_goal
 
@@ -135,24 +131,30 @@ def delta_stepping_dijkstra(start, goal, nodes, original_maze, path, finalPath, 
     nodes_explored = mp.Value('i', 0)
 
     current_bucket = 0
-    while current_bucket < 1000:  # Prevent infinite loops
+    max_bucket = 1000  # Reasonable upper limit to prevent infinite loops
+    goal_found = False
+    
+    while current_bucket <= max_bucket and not goal_found:
         if not buckets[current_bucket]:
             current_bucket += 1
             continue
 
         # Process current bucket in parallel
-        relaxed_edges, goal_found = parallel_process_bucket(
+        relaxed_edges, found_goal = parallel_process_bucket(
             current_bucket, buckets, costs, parents, visited, goal_id, delta, nodes_explored, num_processes
         )
 
-        if goal_found:
+        if found_goal:
+            goal_found = True
             break
 
-        # Update buckets with relaxed edges
+        # Add relaxed edges to their respective buckets
         for node, bucket_idx in relaxed_edges:
+            max_bucket = max(max_bucket, bucket_idx)
             if node not in buckets[bucket_idx]:
                 buckets[bucket_idx].append(node)
 
+        # Clear the current bucket after processing
         buckets[current_bucket].clear()
         current_bucket += 1
 
