@@ -10,6 +10,8 @@ from algorithms.dijkstra import dijkstra_search
 from algorithms.bellman_ford import bellman_ford_search
 # Import the parallel implementation
 from algorithms.parallel_dijkstra import delta_stepping_dijkstra
+from algorithms.parallel_astar import parallel_a_star
+import time
 # Add to imports at top
 # from algorithms.delta_stepping_dijkstra import delta_stepping_dijkstra
 def print_maze_with_path(maze_list, path_nodes):
@@ -75,4 +77,24 @@ if __name__ == '__main__':
         
         # Print the maze with the path marked
         print_maze_with_path(maze_list, final_path)
+# In your main function:
+        # Update the section that calls parallel_a_star:
+    
+    elif user_input == 5:
+        setup_maze(maze_list, Wall, Start, goal_pen)
+        start_time = time.time()
+        final_path, nodes_processed = parallel_a_star(root, goal_node, n, maze_list, path, finalPath, goal_pen)
+        execution_time = time.time() - start_time
+        
+        print(f"Parallel A* search completed in {execution_time:.4f} seconds")
+        print(f"Nodes processed: {nodes_processed}")
+        
+        if final_path:
+            print(f"Path found with {len(final_path)} steps")
+            # Path is already visualized in the function
+            
+            # Print the maze with the path marked
+            print_maze_with_path(maze_list, final_path)
+        else:
+            print("No path found!")
     wn.mainloop()
