@@ -25,7 +25,7 @@ def dijkstra_search(start, goal, nodes, original_maze, path, finalPath, goal_pen
         if current.data not in ('p', 'G'):
             path.goto(current.x, current.y)
             path.stamp()
-            time.sleep(0.1)
+            # time.sleep(0.1)
 
         if current == goal:
             break
@@ -54,7 +54,7 @@ def dijkstra_search(start, goal, nodes, original_maze, path, finalPath, goal_pen
         if node.data not in ('p', 'G'):
             finalPath.goto(node.x, node.y)
             finalPath.stamp()
-            time.sleep(0.1)
+            # time.sleep(0.1)
 
     # Use the original maze structure for display
     display_maze_with_path(original_maze, path_list)

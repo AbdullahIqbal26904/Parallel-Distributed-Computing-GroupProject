@@ -23,24 +23,20 @@ def createNodes(maze):
     return listOfNodes
 
 
-def createFriendsList(listOfNodes):
-    root = None
-    goal = None
-    node_dict = {(node.x, node.y): node for node in listOfNodes}
-    for node in listOfNodes:
+def createFriendsList(nodes):
+    root, goal = None, None
+    edges = []
+    node_dict = {(node.x, node.y): node for node in nodes}
+    for node in nodes:
         if node.data == "p":
             root = node
             node.g_cost = 0
-        else:
-            node.g_cost = 20
         if node.data == "G":
             goal = node
-        positions = [(50, 0), (-50, 0), (0, 50), (0, -50)]
-        for dx, dy in positions:
-            neighbor_x = node.x + dx
-            neighbor_y = node.y + dy
-            if (neighbor_x, neighbor_y) in node_dict:
-                neighbor = node_dict[(neighbor_x, neighbor_y)]
+        for dx, dy in [(50, 0), (-50, 0), (0, 50), (0, -50)]:
+            neighbor = node_dict.get((node.x + dx, node.y + dy))
+            # Skip walls and invalid neighbors
+            if neighbor and neighbor.data != "X":  # <--- KEY CHANGE HERE
                 node.friend.append(neighbor)
-                neighbor.parent = node
-    return root, goal
+                edges.append((node, neighbor, 20))  # Edge weight = 20
+    return root, goal, edges

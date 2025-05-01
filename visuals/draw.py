@@ -1,3 +1,4 @@
+import time
 import turtle
 import _tkinter
 
@@ -102,6 +103,59 @@ def setup_maze(maze, pen, player, goal):
                     cell_info.write(f"Wall", align="center", font=("Arial", 12, "normal"))
     except _tkinter.TclError as e:
         pass
+
+
+def create_thread_turtles(colors):
+    """Create multiple turtles for parallel path visualization."""
+    turtles = []
+    for color in colors:
+        t = Draw("B")
+        t.color(color)
+        t.hideturtle()
+        turtles.append(t)
+    return turtles
+
+
+def update_visualization(screen, queue, path_queue, thread_colors):
+    """Process-safe visualization updater."""
+    turtles = [turtle.Turtle() for _ in thread_colors]
+    for t, color in zip(turtles, thread_colors):
+        t.shape("square")
+        t.shapesize(1.5)
+        t.color(color)
+        t.penup()
+        t.speed(0)
+        t.hideturtle()
+
+    final_path_turtle = turtle.Turtle()
+    final_path_turtle.color("blue")
+    final_path_turtle.penup()
+    final_path_turtle.hideturtle()
+
+    while True:
+        while not queue.empty():
+            node, color_id = queue.get()
+            turtles[color_id].goto(node.x, node.y)
+            turtles[color_id].stamp()
+
+        if not path_queue.empty():
+            path = path_queue.get()
+            for node in reversed(path):
+                final_path_turtle.goto(node.x, node.y)
+                final_path_turtle.stamp()
+            break
+
+        screen.update()
+        # time.sleep(0.01)
+def create_dijkstra_turtles(colors):
+    """Create colored turtles for parallel Dijkstra visualization."""
+    turtles = []
+    for color in colors:
+        t = Draw("B")
+        t.color(color)
+        t.shapesize(1.5)  # Slightly smaller for clarity
+        turtles.append(t)
+    return turtles
 
 
 def reset_maze(path, finalPath):
