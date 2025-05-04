@@ -3,7 +3,8 @@ import math
 import time
 import multiprocessing as mp
 from visuals.draw import setup_maze, Draw
-
+import sys
+sys.setrecursionlimit(10000)
 def heuristic(x, y, goal):
     # Manhattan distance may work better for grid-based mazes
     return abs(goal.x - x) + abs(goal.y - y)

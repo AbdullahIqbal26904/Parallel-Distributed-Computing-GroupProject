@@ -1,5 +1,65 @@
 from core.node import Node
+import random
 
+def generate_maze(width, height, wall_density=0.2):
+    """Generate a random maze of specified dimensions.
+    
+    Args:
+        width: Width of the maze
+        height: Height of the maze
+        wall_density: Probability of a cell being a wall (0.0 to 1.0)
+        
+    Returns:
+        2D list representing the maze
+    """
+    maze = []
+    
+    # Generate random maze with specified wall density
+    for y in range(height):
+        row = []
+        for x in range(width):
+            # First column and last row/column are walls
+            if x == 0 or y == height-1 or x == width-1:
+                row.append('X')
+            # Place start position in top-left corner
+            elif x == 1 and y == 1:
+                row.append('p')
+            # Place goal in bottom-right corner (not on edge)
+            elif x == width-2 and y == height-2:
+                row.append('G')
+            # Random walls or open spaces elsewhere
+            else:
+                if random.random() < wall_density:
+                    row.append('X')
+                else:
+                    row.append('b')
+        maze.append(row)
+    
+    # Ensure a path exists from start to goal using a simple flood fill check
+    # (This is a basic implementation - might need to be refined)
+    ensure_path_exists(maze, 1, 0, width-2, height-2)
+    
+    return maze
+
+def ensure_path_exists(maze, start_x, start_y, goal_x, goal_y):
+    """Ensure there is a valid path from start to goal."""
+    # Simple solution: create a corridor from start to goal
+    # This could be improved with more sophisticated maze generation
+    
+    # Horizontal corridor to almost goal_x
+    x = start_x
+    while x < goal_x:
+        maze[start_y][x] = 'b'
+        x += 1
+    
+    # Vertical corridor to goal_y
+    y = start_y
+    while y < goal_y:
+        maze[y][x] = 'b'
+        y += 1
+    
+    # Ensure goal is accessible
+    maze[goal_y][goal_x] = 'G'
 
 def read_File_Create_List(filename):
     with open(filename, 'r') as file:

@@ -7,7 +7,6 @@ from core.maze_utils import createNodes
 from core.maze_utils import createFriendsList
 from algorithms.a_star import A_star_Search
 from algorithms.dijkstra import dijkstra_search
-from algorithms.bellman_ford import bellman_ford_search
 # Import the parallel implementation
 from algorithms.parallel_dijkstra import delta_stepping_dijkstra
 from algorithms.parallel_astar import parallel_a_star
@@ -29,6 +28,10 @@ def print_maze_with_path(maze_list, path_nodes):
     print("\nMaze with final path:")
     for row in maze_copy:
         print(''.join(row))
+
+def dijkstra_performance_test(root, goal_node, n, maze_list, path, finalPath, goal_pen, num_processes, delta):
+    # run sequential
+    pass
 
 if __name__ == '__main__':
     user_input = int(input(
@@ -57,9 +60,10 @@ if __name__ == '__main__':
         setup_maze(maze_list, Wall, Start, goal_pen)
         dijkstra_search(root, goal_node, n, maze_list, path, finalPath, goal_pen)
     elif user_input == 3:
-        setup_maze(maze_list, Wall, Start, goal_pen)
-        bellman_ford_search(root, goal_node, n, edge_list, maze_list,
-                            path, finalPath, goal_pen)
+        pass
+        # setup_maze(maze_list, Wall, Start, goal_pen)
+        # bellman_ford_search(root, goal_node, n, edge_list, maze_list,
+        #                     path, finalPath, goal_pen)
     elif user_input == 4:
         # Run Delta-Stepping Dijkstra
         num_processes = int(input("Enter number of processes (or 0 for auto): ") or "0")
@@ -97,4 +101,6 @@ if __name__ == '__main__':
             print_maze_with_path(maze_list, final_path)
         else:
             print("No path found!")
+    elif user_input == 6:
+        print("Running Parallel Dijkstra...")
     wn.mainloop()

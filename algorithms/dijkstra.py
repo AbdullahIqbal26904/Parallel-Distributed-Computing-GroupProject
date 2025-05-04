@@ -48,16 +48,16 @@ def dijkstra_search(start, goal, nodes, original_maze, path, finalPath, goal_pen
         path_list.append(current_node)
         current_node = current_node.parent
     path_list.reverse()
-
+    return path_list
     # Draw final path
-    for node in path_list:
-        if node.data not in ('p', 'G'):
-            finalPath.goto(node.x, node.y)
-            finalPath.stamp()
+    # for node in path_list:
+    #     if node.data not in ('p', 'G'):
+    #         finalPath.goto(node.x, node.y)
+    #         finalPath.stamp()
             # time.sleep(0.1)
 
     # Use the original maze structure for display
-    display_maze_with_path(original_maze, path_list)
-    goal_pen.color("red")
-    goal_pen.goto(goal.x, goal.y)
-    goal_pen.stamp()
+    # display_maze_with_path(original_maze, path_list)
+    # goal_pen.color("red")
+    # goal_pen.goto(goal.x, goal.y)
+    # goal_pen.stamp()
