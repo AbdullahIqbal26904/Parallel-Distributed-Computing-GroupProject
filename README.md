@@ -118,7 +118,3 @@ Mazes are defined in text files with the following notation:
 - `b`: Open space
 
 To create a custom maze, edit the `maze.txt` file or create a new one with the same format.
-
-## License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
