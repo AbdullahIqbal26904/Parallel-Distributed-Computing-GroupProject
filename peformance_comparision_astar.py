@@ -225,7 +225,7 @@ def modified_a_star_search(start, goal, nodes, original_maze=None, path=None, fi
 if __name__ == "__main__":
     # Define maze sizes to test: (width, height)
     # Use slightly larger mazes to better see the parallel performance difference
-    sizes = [(10,10), (20, 20), (30, 30), (40, 40)]
+    sizes = [(10,10), (20, 20), (30, 30), (40, 40), (50, 50)]
     
     # Larger wall density will create more complex mazes
     wall_density = 0.25
