@@ -35,7 +35,8 @@ def dijkstra_performance_test(root, goal_node, n, maze_list, path, finalPath, go
 
 if __name__ == '__main__':
     user_input = int(input(
-        "Enter 1 for A*, 2 for Dijkstra, 3 for Bellman-Ford, 4 for Parallel Dijkstra: "))
+        "Enter 1 for A*, 2 for Dijkstra, 3 for Bellman-Ford, 4 for Parallel Dijkstra: ," \
+        "5 for Parallel A*"))
     filename = "maze.txt"
     print(filename)
     Wall = Draw("W")
@@ -44,21 +45,29 @@ if __name__ == '__main__':
     path = Draw("B")
     finalPath = Draw("F")
     pen_for_pheromone = Draw("pheromone")
-    wn = turtle.Screen()
-    wn.bgcolor("black")
-    wn.title("Maze Solver")
-    wn.setup(1400, 800)
+    
     maze_list = read_File_Create_List(filename)
     n = createNodes(maze_list)
     root, goal_node, edge_list = createFriendsList(n)
-    wn.onkey(lambda: reset_maze(path, finalPath), 'r')
+    # wn.onkey(lambda: reset_maze(path, finalPath), 'r')
 
     if user_input == 1:
+        wn = turtle.Screen()
+        wn.bgcolor("black")
+        wn.title("Maze Solver")
+        wn.setup(1400, 800)
         setup_maze(maze_list, Wall, Start, goal_pen)
         A_star_Search(root, goal_node, n, path, finalPath, goal_pen)
+        wn.mainloop()
     elif user_input == 2:
+        wn = turtle.Screen()
+        wn.bgcolor("black")
+        wn.title("Maze Solver")
+        wn.setup(1400, 800)
         setup_maze(maze_list, Wall, Start, goal_pen)
+        
         dijkstra_search(root, goal_node, n, maze_list, path, finalPath, goal_pen)
+        wn.mainloop()
     elif user_input == 3:
         pass
         # setup_maze(maze_list, Wall, Start, goal_pen)
@@ -85,7 +94,7 @@ if __name__ == '__main__':
         # Update the section that calls parallel_a_star:
     
     elif user_input == 5:
-        setup_maze(maze_list, Wall, Start, goal_pen)
+        # setup_maze(maze_list, Wall, Start, goal_pen)
         start_time = time.time()
         final_path, nodes_processed = parallel_a_star(root, goal_node, n, maze_list, path, finalPath, goal_pen)
         execution_time = time.time() - start_time
@@ -98,9 +107,9 @@ if __name__ == '__main__':
             # Path is already visualized in the function
             
             # Print the maze with the path marked
-            print_maze_with_path(maze_list, final_path)
+            # print_maze_with_path(maze_list, final_path)
         else:
             print("No path found!")
     elif user_input == 6:
         print("Running Parallel Dijkstra...")
-    wn.mainloop()
+    
