@@ -17,6 +17,7 @@ This project demonstrates the application of parallel computing techniques to tr
   - Parallel A* Search
 - Performance metrics for comparing sequential vs. parallel implementations
 - Interactive visualization using Python's Turtle graphics
+- Performance comparison and visualization tools
 
 ## Installation
 
@@ -63,6 +64,20 @@ For parallel algorithms, you can specify:
 - Number of processes (or 0 for auto-detection)
 - Delta value (for Delta-Stepping algorithm)
 
+## Performance Testing
+
+To run performance tests comparing sequential and parallel implementations:
+
+```bash
+# For Dijkstra performance comparison
+python performance_comparision.py
+
+# For A* performance comparison
+python peformance_comparision_astar.py
+```
+
+The performance tests will generate visualizations comparing execution times and speedups.
+
 ## Algorithms
 
 ### A* Search
@@ -84,21 +99,24 @@ A parallel implementation of A* that distributes the processing of neighbor node
 
 ```
 .
-├── algorithms/               # Algorithm implementations
-│   ├── a_star.py            # Sequential A* implementation
-│   ├── dijkstra.py          # Sequential Dijkstra implementation
-│   ├── bellman_ford.py      # Sequential Bellman-Ford implementation  
-│   ├── parallel_dijkstra.py # Parallel Delta-Stepping Dijkstra
-│   └── parallel_astar.py    # Parallel A* implementation
-├── core/                     # Core data structures
-│   ├── node.py              # Node representation
-│   ├── priority_queue.py    # Priority queue implementation
-│   └── maze_utils.py        # Maze utility functions
-├── visuals/                  # Visualization components
-│   └── draw.py              # Drawing utilities
-├── main.py                   # Main application entry point
-├── maze.txt                  # Sample maze definition
-└── requirements.txt          # Project dependencies
+├── algorithms/                   # Algorithm implementations
+│   ├── a_star.py                # Sequential A* implementation
+│   ├── dijkstra.py              # Sequential Dijkstra implementation
+│   ├── BellmanFord_v5.py        # Sequential & Parallel Bellman-Ford  
+│   ├── parallel_dijkstra.py     # Parallel Delta-Stepping Dijkstra
+│   └── parallel_astar.py        # Parallel A* implementation
+├── core/                         # Core data structures
+│   ├── node.py                  # Node representation
+│   ├── priority_queue.py        # Priority queue implementation
+│   └── maze_utils.py            # Maze utility functions & generation
+├── visuals/                      # Visualization components
+│   └── draw.py                  # Drawing utilities for maze visualization
+├── main.py                       # Main application entry point
+├── performance_comparision.py    # Performance testing for Dijkstra
+├── peformance_comparision_astar.py # Performance testing for A*
+├── bellman_ford_results.csv      # Performance results for Bellman-Ford
+├── maze.txt                      # Sample maze definition
+└── requirements.txt              # Project dependencies
 ```
 
 ## Performance Comparison
@@ -109,6 +127,12 @@ The parallel implementations generally outperform their sequential counterparts,
 - Available CPU cores
 - Algorithm parameters (like delta value for Delta-Stepping)
 
+The repository includes performance comparison visualizations:
+- `dijkstra_performance_comparison.png` - Performance comparison for Dijkstra algorithms
+- `astar_performance_comparison.png` - Performance comparison for A* algorithms
+- `execution_time.png` - Bellman-Ford execution time comparison
+- `speedup.png` - Bellman-Ford speedup visualization
+
 ## Creating Custom Mazes
 
 Mazes are defined in text files with the following notation:
@@ -117,4 +141,12 @@ Mazes are defined in text files with the following notation:
 - `G`: Goal position
 - `b`: Open space
 
-To create a custom maze, edit the `maze.txt` file or create a new one with the same format.
+To create a custom maze, edit the `maze.txt` file or create a new one with the same format. You can also use the `generate_maze()` function in `core/maze_utils.py` to programmatically generate random mazes of any size.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+## License
+
+This project is open source and available under the MIT License.
